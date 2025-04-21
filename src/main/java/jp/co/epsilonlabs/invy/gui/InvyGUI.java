@@ -13,14 +13,16 @@ import java.util.Map;
 public class InvyGUI {
 
     private final InvyPlugin plugin;
+    private final String guiTitle;
 
     public InvyGUI(InvyPlugin plugin) {
         this.plugin = plugin;
+        this.guiTitle = ChatColor.BLUE + plugin.getMessageManager().get("item.list_title");
     }
 
     // GUIを開く処理
     public void open(Player player) {
-        Inventory gui = Bukkit.createInventory(null, 54, ChatColor.BLUE + "アイテム一覧");
+        Inventory gui = Bukkit.createInventory(null, 54, ChatColor.BLUE + guiTitle);
 
         ItemManager itemManager = plugin.getItemManager();
         for (Map.Entry<Integer, ItemStack> entry : itemManager.getAllItems().entrySet()) {

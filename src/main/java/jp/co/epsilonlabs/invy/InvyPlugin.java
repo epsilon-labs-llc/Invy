@@ -4,6 +4,7 @@ import jp.co.epsilonlabs.invy.item.ItemManager;
 import jp.co.epsilonlabs.invy.gui.InvyGUI;
 import jp.co.epsilonlabs.invy.listener.InventoryClickListener;
 import jp.co.epsilonlabs.invy.listener.ItemDropListener;
+import jp.co.epsilonlabs.invy.util.MessageManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.PluginCommand;
@@ -15,6 +16,7 @@ public final class InvyPlugin extends JavaPlugin {
 
     private ItemManager itemManager;
     private InvyGUI invyGUI;
+    private MessageManager messageManager;
 
     @Override
     public void onEnable() {
@@ -23,6 +25,10 @@ public final class InvyPlugin extends JavaPlugin {
 
         // config.yml, items.yml をロード
         saveDefaultConfig();
+        reloadConfig();
+
+        // メッセージマネージャー初期化
+        this.messageManager = new MessageManager(this);
 
         // アイテムマネージャーの初期化
         this.itemManager = new ItemManager(this);
@@ -33,7 +39,7 @@ public final class InvyPlugin extends JavaPlugin {
 
         // リスナーの登録
         PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(new InventoryClickListener(), this);
+        pluginManager.registerEvents(new InventoryClickListener(this), this);
         pluginManager.registerEvents(new ItemDropListener(this), this);
 
         // コマンドの登録
@@ -54,8 +60,13 @@ public final class InvyPlugin extends JavaPlugin {
         return itemManager;
     }
 
-    // GUIを操作するための InvyGUI インスタンスを返す
+    // GUIを操作するための InvyGUI を返す
     public InvyGUI getInvyGUI() {
         return invyGUI;
+    }
+
+    //多言語のための MessageManager を返す
+    public MessageManager getMessageManager() {
+        return messageManager;
     }
 }

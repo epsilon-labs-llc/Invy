@@ -1,6 +1,7 @@
 package jp.co.epsilonlabs.invy.commands;
 
 import jp.co.epsilonlabs.invy.InvyPlugin;
+import jp.co.epsilonlabs.invy.util.MessageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -26,41 +27,43 @@ public class GrantHandler {
     }
 
     public boolean handleGrant(CommandSender sender, String[] args) {
-        if (args.length < 3) {
-            sender.sendMessage(ChatColor.RED + "使い方: /invy grant <player> <time>");
-            return true;
-        }
+        MessageManager messages = plugin.getMessageManager();
 
         Player target = Bukkit.getPlayerExact(args[1]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "プレイヤーが見つかりません。");
+            sender.sendMessage(ChatColor.RED + messages.get("player.not_found"));
             return true;
         }
 
         long durationTicks = parseTime(args[2]);
         if (durationTicks <= 0) {
-            sender.sendMessage(ChatColor.RED + "無効な時間です（例: 10s, 5m, 1h）");
+            sender.sendMessage(ChatColor.RED + messages.get("grant.invalid_time"));
             return true;
         }
 
-        // 権限付与
+        // 一時的に invy.use 権限を付与
         PermissionAttachment attachment = target.addAttachment(plugin);
         attachment.setPermission("invy.use", true);
         granted.put(target.getUniqueId(), attachment);
 
-        sender.sendMessage(ChatColor.GREEN + target.getName() + " に一時的に invy.use を付与しました（" + args[2] + "）");
-        target.sendMessage(ChatColor.YELLOW + "InvyのGUIを一時的に使用できます！（" + args[2] + "）");
+        // メッセージ表示
+        Map<String, String> vars = Map.of(
+                "player", target.getName(),
+                "time", args[2]
+        );
+        sender.sendMessage(ChatColor.GREEN + messages.getFormatted("grant.success", vars));
+        target.sendMessage(ChatColor.YELLOW + messages.getFormatted("grant.notice", vars));
 
         // ログ出力
         logger.info("[Invy] " + sender.getName() + " granted 'invy.use' permission to " + target.getName() + " for " + args[2]);
 
-        // 時間が来たら解除
+        // 指定時間後に権限を自動で削除
         new BukkitRunnable() {
             @Override
             public void run() {
                 if (target.isOnline() && granted.containsKey(target.getUniqueId())) {
                     target.removeAttachment(granted.remove(target.getUniqueId()));
-                    target.sendMessage(ChatColor.RED + "InvyのGUIの使用権限が期限切れになりました。");
+                    target.sendMessage(ChatColor.RED + messages.get("grant.expired"));
                 }
             }
         }.runTaskLater(plugin, durationTicks);
@@ -68,6 +71,7 @@ public class GrantHandler {
         return true;
     }
 
+    // 時間をTickに変換する
     private long parseTime(String timeStr) {
         try {
             long value = Long.parseLong(timeStr.replaceAll("[smhd]", ""));

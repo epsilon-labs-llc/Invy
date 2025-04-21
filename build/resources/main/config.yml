@@ -1,1 +1,9 @@
-lang: ja
+# ============================================
+# Invy Configuration File
+# ============================================
+
+# Language setting
+# - en → English
+# - ja → 日本語
+# - custom → Custom messages
+lang: en

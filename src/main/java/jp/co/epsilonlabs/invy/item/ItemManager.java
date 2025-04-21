@@ -1,6 +1,7 @@
 package jp.co.epsilonlabs.invy.item;
 
 import jp.co.epsilonlabs.invy.InvyPlugin;
+import jp.co.epsilonlabs.invy.util.MessageManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -26,18 +27,20 @@ public class ItemManager {
         this.plugin = plugin;
     }
 
+    // items.yml を読み込んでカスタムアイテムを生成する
     public LoadResult loadItems() {
+        MessageManager messages = plugin.getMessageManager();
+
         // 既存のアイテムリストを初期化
         items.clear();
 
-        // 成功 / 失敗の件数カウント
-        int success = 0;
-        int fail = 0;
+        int success = 0; // 読み込み成功数
+        int fail = 0;    // 読み込み失敗数
 
         // items.yml ファイルを取得
         File file = new File(plugin.getDataFolder(), "items.yml");
         if (!file.exists()) {
-            plugin.saveResource("items.yml", false);
+            plugin.saveResource("items.yml", false); // 初回起動時に生成
         }
 
         // YAML構成ファイルとして読み込み
@@ -47,7 +50,7 @@ public class ItemManager {
 
         // セクションが存在しない場合は警告ログを出して終了
         if (section == null) {
-            plugin.getLogger().warning("items.yml に items セクションが見つかりません。");
+            plugin.getLogger().warning(messages.get("item.section_missing"));
             return new LoadResult(0, 1);
         }
 
@@ -62,12 +65,17 @@ public class ItemManager {
             ConfigurationSection itemSection = section.getConfigurationSection(String.valueOf(id));
             if (itemSection == null) continue;
 
+            // 素材を取得
             String rawMaterial = itemSection.getString("material", "STONE").toUpperCase();
             Material material;
             try {
                 material = Material.valueOf(rawMaterial);
             } catch (IllegalArgumentException e) {
-                plugin.getLogger().warning("無効な素材です: " + rawMaterial + "（ID: " + id + "）");
+                Map<String, String> vars = Map.of(
+                        "material", rawMaterial,
+                        "id", String.valueOf(id)
+                );
+                plugin.getLogger().warning(messages.getFormatted("item.invalid_material", vars));
                 fail++;
                 continue;
             }
@@ -102,17 +110,17 @@ public class ItemManager {
                 }
             }
 
-            // 耐久設定
+            // 耐久無限の設定
             meta.setUnbreakable(itemSection.getBoolean("unbreakable", false));
 
-            // 属性表示を非表示に
+            // アイテムの属性・エンチャント表示を隠す
             meta.addItemFlags(
                     ItemFlag.HIDE_ENCHANTS,
                     ItemFlag.HIDE_ATTRIBUTES,
                     ItemFlag.HIDE_UNBREAKABLE
             );
 
-            // NBTにフラグを埋め込む
+            // カスタムアイテム識別用のNBTフラグを設定
             NamespacedKey key = new NamespacedKey(plugin, "custom_item");
             meta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
 
@@ -122,13 +130,19 @@ public class ItemManager {
             success++;
         }
 
-        plugin.getLogger().info("アイテム読み込み完了: 成功 " + success + " 件 / 失敗 " + fail + " 件");
+        Map<String, String> resultVars = Map.of(
+                "success", String.valueOf(success),
+                "fail", String.valueOf(fail)
+        );
+        plugin.getLogger().info(messages.getFormatted("item.load_summary", resultVars));
         return new LoadResult(success, fail);
     }
 
+    // 読み込まれた全カスタムアイテムを返す
     public Map<Integer, ItemStack> getAllItems() {
         return items;
     }
 
+    // 成功・失敗の件数を保持するレコードクラス
     public record LoadResult(int success, int fail) {}
 }

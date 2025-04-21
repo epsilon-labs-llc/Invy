@@ -2,6 +2,7 @@ package jp.co.epsilonlabs.invy.commands;
 
 import jp.co.epsilonlabs.invy.InvyPlugin;
 import jp.co.epsilonlabs.invy.item.ItemManager;
+import jp.co.epsilonlabs.invy.util.MessageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class InvyCommand implements CommandExecutor, TabCompleter {
 
@@ -42,16 +44,20 @@ public class InvyCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        MessageManager messages = plugin.getMessageManager();
+
+        // 引数なし → 利用可能なコマンドを表示（権限によって制限）
         if (args.length == 0) {
             sender.sendMessage(ChatColor.GOLD + "Invy v" + plugin.getDescription().getVersion());
+
             if (sender.hasPermission("invy.use")) {
-                sender.sendMessage(ChatColor.GRAY + "/invy gui - GUIを開く");
+                sender.sendMessage(ChatColor.GRAY + messages.get("help.gui"));
             }
             if (sender.hasPermission("invy.reload")) {
-                sender.sendMessage(ChatColor.GRAY + "/invy reload - 設定をリロード");
+                sender.sendMessage(ChatColor.GRAY + messages.get("help.reload"));
             }
             if (sender.hasPermission("invy.grant")) {
-                sender.sendMessage(ChatColor.GRAY + "/invy grant <player> <time> - 権限を一時付与");
+                sender.sendMessage(ChatColor.GRAY + messages.get("help.grant"));
             }
             return true;
         }
@@ -60,23 +66,42 @@ public class InvyCommand implements CommandExecutor, TabCompleter {
             case "reload" -> {
                 // 権限チェック
                 if (!sender.hasPermission("invy.reload")) {
-                    sender.sendMessage(ChatColor.RED + "この操作を行う権限がありません。");
+                    sender.sendMessage(ChatColor.RED + messages.get("no_permission"));
                     return true;
                 }
-                plugin.reloadConfig();
+
+                // 言語再読み込み（変更があるかチェック）
+                String oldLang = plugin.getMessageManager().getLang();
+                plugin.reloadConfig(); // 設定ファイル再読み込み
+                plugin.getMessageManager().loadMessages();
+                String newLang = plugin.getMessageManager().getLang();
+
+                // アイテム再読み込み
                 ItemManager.LoadResult result = plugin.getItemManager().loadItems();
-                sender.sendMessage(ChatColor.GREEN + "設定をリロードしました: 成功 " + result.success() + " 件 / 失敗 " + result.fail() + " 件");
+
+                // メッセージ送信
+                sender.sendMessage(ChatColor.GREEN + plugin.getMessageManager().getFormatted("reload.success", Map.of(
+                        "success", String.valueOf(result.success()),
+                        "fail", String.valueOf(result.fail())
+                )));
+
+                if (!oldLang.equals(newLang)) {
+                    sender.sendMessage(ChatColor.YELLOW + plugin.getMessageManager().getFormatted("reload.lang_changed", Map.of(
+                            "oldLang", oldLang,
+                            "newLang", newLang
+                    )));
+                }
                 return true;
             }
 
             case "gui" -> {
                 if (!(sender instanceof Player player)) {
-                    sender.sendMessage(ChatColor.RED + "このコマンドはプレイヤーのみが使用できます。");
+                    sender.sendMessage(ChatColor.RED + messages.get("only_player"));
                     return true;
                 }
                 // 権限チェック
                 if (!player.hasPermission("invy.use")) {
-                    player.sendMessage(ChatColor.RED + "この操作を行う権限がありません。");
+                    player.sendMessage(ChatColor.RED + messages.get("no_permission"));
                     return true;
                 }
                 plugin.getInvyGUI().open(player);
@@ -86,44 +111,40 @@ public class InvyCommand implements CommandExecutor, TabCompleter {
             case "grant" -> {
                 // 権限チェック
                 if (!sender.hasPermission("invy.grant")) {
-                    sender.sendMessage(ChatColor.RED + "この操作を行う権限がありません。");
+                    sender.sendMessage(ChatColor.RED + messages.get("no_permission"));
                     return true;
                 }
 
                 // 引数チェック
                 if (args.length < 3) {
-                    sender.sendMessage(ChatColor.RED + "使用方法: /invy grant <player> <time>");
+                    sender.sendMessage(ChatColor.RED + messages.get("grant.usage"));
                     return true;
                 }
 
                 // プレイヤーがオンラインか確認
                 Player target = Bukkit.getPlayerExact(args[1]);
                 if (target == null) {
-                    sender.sendMessage(ChatColor.RED + "指定されたプレイヤーは見つかりません。");
+                    sender.sendMessage(ChatColor.RED + messages.get("player.not_found"));
                     return true;
                 }
 
                 try {
-                    // 時間を秒に変換
-                    int seconds = parseTimeStringToSeconds(args[2]);
-                    // チャットに通知
-                    sender.sendMessage(ChatColor.GREEN + target.getName() + " にGUI権限を " + seconds + " 秒間付与しました");
                     // コアの grant 処理へ委譲
                     return grantHandler.handleGrant(sender, args);
                 } catch (IllegalArgumentException e) {
-                    // パース失敗時のエラー表示
-                    sender.sendMessage(ChatColor.RED + "時間形式が不正です。例: 30s, 3m, 1h, 1d");
+                    sender.sendMessage(ChatColor.RED + messages.get("grant.invalid_time"));
                 }
                 return true;
             }
 
             default -> {
-                sender.sendMessage(ChatColor.RED + "無効なサブコマンドです。/invy で確認してください。");
+                sender.sendMessage(ChatColor.RED + messages.get("invalid_subcommand"));
                 return true;
             }
         }
     }
 
+    // 時間文字列を秒に変換する
     private int parseTimeStringToSeconds(String input) {
         int totalSeconds = 0;
         StringBuilder number = new StringBuilder();

@@ -1,5 +1,5 @@
 name: Invy
-version: 1.0.0-SNAPSHOT
+version: 1.0.0
 main: jp.co.epsilonlabs.invy.InvyPlugin
 api-version: '1.21'
 commands:

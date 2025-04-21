@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,6 +84,10 @@ public class ItemManager {
                         ItemFlag.HIDE_UNBREAKABLE
                 );
 
+                // NBTタグ追加
+                meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "custom_item"), PersistentDataType.BYTE, (byte) 1);
+
+                // メタ情報をアイテムに適用
                 item.setItemMeta(meta);
                 items.put(id, item);
             } catch (Exception e) {

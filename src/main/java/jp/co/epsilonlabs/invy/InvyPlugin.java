@@ -3,6 +3,7 @@ import jp.co.epsilonlabs.invy.commands.InvyCommand;
 import jp.co.epsilonlabs.invy.item.ItemManager;
 import jp.co.epsilonlabs.invy.gui.InvyGUI;
 import jp.co.epsilonlabs.invy.listener.InventoryClickListener;
+import jp.co.epsilonlabs.invy.listener.ItemDropListener;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.PluginCommand;
@@ -30,9 +31,10 @@ public final class InvyPlugin extends JavaPlugin {
         // GUIの初期化
         invyGUI = new InvyGUI(this);
 
-        // イベントリスナーの登録
+        // リスナーの登録
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new InventoryClickListener(), this);
+        pluginManager.registerEvents(new ItemDropListener(this), this);
 
         // コマンドの登録
         InvyCommand commandHandler = new InvyCommand(this);

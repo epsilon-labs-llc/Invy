@@ -1,6 +1,6 @@
 # Invy - A Simple Custom Item Management Plugin
 
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/epsilon-labs-llc/Invy/blob/main/README.en.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/epsilon-labs-llc/Invy/blob/main/README_en.md)
 [![ja](https://img.shields.io/badge/lang-ja-blue.svg)](https://github.com/epsilon-labs-llc/Invy/blob/main/README.md)
 
 **Invy** is a lightweight, easy-to-use custom item management plugin for Minecraft servers.  

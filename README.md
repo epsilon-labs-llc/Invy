@@ -1,6 +1,6 @@
 # Invy - シンプルなカスタムアイテム管理用プラグイン
 
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/epsilon-labs-llc/Invy/blob/main/README.en.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/epsilon-labs-llc/Invy/blob/main/README_en.md)
 [![ja](https://img.shields.io/badge/lang-ja-blue.svg)](https://github.com/epsilon-labs-llc/Invy/blob/main/README.md)
 
 **Invy** は、サーバーに軽量で簡単に導入できるカスタムアイテム管理用プラグインです。  

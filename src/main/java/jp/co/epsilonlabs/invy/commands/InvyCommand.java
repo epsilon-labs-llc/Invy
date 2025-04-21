@@ -54,6 +54,7 @@ public class InvyCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 plugin.reloadConfig();
+                plugin.getItemManager().loadItems();
                 sender.sendMessage(ChatColor.GREEN + "設定をリロードしました。");
                 return true;
             }
@@ -67,8 +68,7 @@ public class InvyCommand implements CommandExecutor, TabCompleter {
                     player.sendMessage(ChatColor.RED + "この操作を行う権限がありません。");
                     return true;
                 }
-                player.sendMessage(ChatColor.YELLOW + "GUI機能は現在開発中です。");
-                // TODO: GUI機能を追加
+                plugin.getInvyGUI().open(player);
                 return true;
             }
 

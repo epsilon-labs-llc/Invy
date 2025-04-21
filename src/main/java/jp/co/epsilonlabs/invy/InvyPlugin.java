@@ -1,24 +1,59 @@
 package jp.co.epsilonlabs.invy;
 import jp.co.epsilonlabs.invy.commands.InvyCommand;
+import jp.co.epsilonlabs.invy.item.ItemManager;
+import jp.co.epsilonlabs.invy.gui.InvyGUI;
+import jp.co.epsilonlabs.invy.listener.InventoryClickListener;
+
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.PluginManager;
 
 import java.util.Objects;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public final class InvyPlugin extends JavaPlugin {
+
+    private ItemManager itemManager;
+    private InvyGUI invyGUI;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         getLogger().info("Invy enabled!");
 
-        // コマンド登録
-        Objects.requireNonNull(getCommand("invy")).setExecutor(new InvyCommand(this));
-        Objects.requireNonNull(getCommand("invy")).setTabCompleter(new InvyCommand(this));
+        // config.yml, items.yml をロード
+        saveDefaultConfig();
+
+        // アイテムマネージャーの初期化
+        this.itemManager = new ItemManager(this);
+        itemManager.loadItems();
+
+        // GUIの初期化
+        invyGUI = new InvyGUI(this);
+
+        // イベントリスナーの登録
+        PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(new InventoryClickListener(), this);
+
+        // コマンドの登録
+        InvyCommand commandHandler = new InvyCommand(this);
+        PluginCommand command = Objects.requireNonNull(getCommand("invy"));
+        command.setExecutor(commandHandler);
+        command.setTabCompleter(commandHandler);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
         getLogger().info("Invy disabled.");
+    }
+
+    // カスタムアイテムを管理する ItemManager を返す
+    public ItemManager getItemManager() {
+        return itemManager;
+    }
+
+    // GUIを操作するための InvyGUI インスタンスを返す
+    public InvyGUI getInvyGUI() {
+        return invyGUI;
     }
 }

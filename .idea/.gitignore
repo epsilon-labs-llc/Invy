@@ -1,0 +1,33 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# Shelf & workspace state
+shelf/
+workspace.xml
+
+# Gradle
+.gradle/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Spigot
+plugins/*
+
+# HTTP client (IDE)
+httpRequests/
+
+# Datasource config (IDE)
+dataSources/
+dataSources.local.xml
+
+# Optional: JAR output
+*.jar

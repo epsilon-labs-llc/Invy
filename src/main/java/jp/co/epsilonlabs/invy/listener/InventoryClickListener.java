@@ -9,18 +9,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Map;
-import java.util.Objects;
 
 public class InventoryClickListener implements Listener {
 
     private final InvyPlugin plugin;
-    private final String guiTitle; // GUIのタイトル
 
     public InventoryClickListener(InvyPlugin plugin) {
         this.plugin = plugin;
-        this.guiTitle = ChatColor.BLUE + plugin.getMessageManager().get("item.list_title");
     }
 
     @EventHandler
@@ -29,13 +27,13 @@ public class InventoryClickListener implements Listener {
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
         String title = event.getView().getTitle();
-        if (!title.equals(guiTitle)) return;
+        String expectedTitle = ChatColor.BLUE + plugin.getMessageManager().get("item.list_title");
+        if (!ChatColor.stripColor(title).equals(ChatColor.stripColor(expectedTitle))) return;
 
         // GUI内のすべてのクリックを無効化
         event.setCancelled(true);
-        event.setResult(org.bukkit.event.Event.Result.DENY);
 
-        // GUIの中をクリックしていなければ無視
+        // GUIの外（自分のインベントリ）をクリックした場合は無視
         if (event.getClickedInventory() == null || !event.getClickedInventory().equals(event.getView().getTopInventory())) {
             return;
         }
@@ -44,8 +42,9 @@ public class InventoryClickListener implements Listener {
         if (clicked == null || clicked.getType().isAir()) return;
 
         // アイテム名取得
-        String itemName = clicked.hasItemMeta() && Objects.requireNonNull(clicked.getItemMeta()).hasDisplayName()
-                ? clicked.getItemMeta().getDisplayName()
+        ItemMeta meta = clicked.getItemMeta();
+        String itemName = (meta != null && meta.hasDisplayName())
+                ? meta.getDisplayName()
                 : clicked.getType().name();
 
         // インベントリに空きがあるか確認してから追加
@@ -60,8 +59,12 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        String viewTitle = event.getView().getTitle();
-        if (viewTitle.equals(guiTitle)) {
+        String title = event.getView().getTitle();
+        String expectedTitle = ChatColor.BLUE + plugin.getMessageManager().get("item.list_title");
+        if (!ChatColor.stripColor(title).equals(ChatColor.stripColor(expectedTitle))) return;
+
+        // GUIの中のスロットにドラッグされていたらキャンセル
+        if (event.getRawSlots().stream().anyMatch(slot -> slot < event.getView().getTopInventory().getSize())) {
             event.setCancelled(true);
         }
     }

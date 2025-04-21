@@ -3,7 +3,6 @@
 *.iml
 *.iws
 out/
-
 # Shelf & workspace state
 shelf/
 workspace.xml
@@ -20,7 +19,7 @@ Thumbs.db
 *.log
 
 # Spigot
-plugins/*
+plugins/*  # （Invy.jar などビルド後の出力を除外）
 
 # HTTP client (IDE)
 httpRequests/

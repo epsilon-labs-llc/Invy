@@ -13,9 +13,11 @@ import java.util.List;
 public class InvyCommand implements CommandExecutor, TabCompleter {
 
     private final InvyPlugin plugin;
+    private final GrantHandler grantHandler;
 
     public InvyCommand(InvyPlugin plugin) {
         this.plugin = plugin;
+        this.grantHandler = new GrantHandler(plugin);
     }
 
     @Override
@@ -49,6 +51,7 @@ public class InvyCommand implements CommandExecutor, TabCompleter {
 
         switch (args[0].toLowerCase()) {
             case "reload" -> {
+                // 権限チェック
                 if (!sender.hasPermission("invy.reload")) {
                     sender.sendMessage(ChatColor.RED + "この操作を行う権限がありません。");
                     return true;
@@ -64,6 +67,7 @@ public class InvyCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(ChatColor.RED + "このコマンドはプレイヤーのみが使用できます。");
                     return true;
                 }
+                // 権限チェック
                 if (!player.hasPermission("invy.use")) {
                     player.sendMessage(ChatColor.RED + "この操作を行う権限がありません。");
                     return true;
@@ -73,15 +77,19 @@ public class InvyCommand implements CommandExecutor, TabCompleter {
             }
 
             case "grant" -> {
+                // 権限チェック
                 if (!sender.hasPermission("invy.grant")) {
                     sender.sendMessage(ChatColor.RED + "この操作を行う権限がありません。");
                     return true;
                 }
+
+                // 引数チェック
                 if (args.length < 3) {
                     sender.sendMessage(ChatColor.RED + "使用方法: /invy grant <player> <time>");
                     return true;
                 }
 
+                // プレイヤーがオンラインか確認
                 Player target = Bukkit.getPlayerExact(args[1]);
                 if (target == null) {
                     sender.sendMessage(ChatColor.RED + "指定されたプレイヤーは見つかりません。");
@@ -89,10 +97,14 @@ public class InvyCommand implements CommandExecutor, TabCompleter {
                 }
 
                 try {
+                    // 時間を秒に変換
                     int seconds = parseTimeStringToSeconds(args[2]);
+                    // チャットに通知
                     sender.sendMessage(ChatColor.GREEN + target.getName() + " にGUI権限を " + seconds + " 秒間付与しました");
-                    // TODO: 実際の一時付与処理を追加
+                    // コアの grant 処理へ委譲
+                    return grantHandler.handleGrant(sender, args);
                 } catch (IllegalArgumentException e) {
+                    // パース失敗時のエラー表示
                     sender.sendMessage(ChatColor.RED + "時間形式が不正です。例: 30s, 3m, 1h, 1d");
                 }
                 return true;

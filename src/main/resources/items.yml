@@ -2,6 +2,8 @@ items:
   1:
     material: STICK
     name: "&bノックバッカー"
+    lore:
+      - "&7これは最強のノックバックの棒"
     enchants:
       KNOCKBACK: 999
     damage: 0

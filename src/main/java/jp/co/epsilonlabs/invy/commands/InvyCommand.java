@@ -1,6 +1,7 @@
 package jp.co.epsilonlabs.invy.commands;
 
 import jp.co.epsilonlabs.invy.InvyPlugin;
+import jp.co.epsilonlabs.invy.item.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
@@ -43,9 +44,15 @@ public class InvyCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 0) {
             sender.sendMessage(ChatColor.GOLD + "Invy v" + plugin.getDescription().getVersion());
-            sender.sendMessage(ChatColor.GRAY + "/invy gui - アイテムGUIを開く");
-            sender.sendMessage(ChatColor.GRAY + "/invy reload - 設定を再読み込み");
-            sender.sendMessage(ChatColor.GRAY + "/invy grant <player> <time> - GUI権限を一時的に付与");
+            if (sender.hasPermission("invy.use")) {
+                sender.sendMessage(ChatColor.GRAY + "/invy gui - GUIを開く");
+            }
+            if (sender.hasPermission("invy.reload")) {
+                sender.sendMessage(ChatColor.GRAY + "/invy reload - 設定をリロード");
+            }
+            if (sender.hasPermission("invy.grant")) {
+                sender.sendMessage(ChatColor.GRAY + "/invy grant <player> <time> - 権限を一時付与");
+            }
             return true;
         }
 
@@ -57,8 +64,8 @@ public class InvyCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 plugin.reloadConfig();
-                plugin.getItemManager().loadItems();
-                sender.sendMessage(ChatColor.GREEN + "設定をリロードしました。");
+                ItemManager.LoadResult result = plugin.getItemManager().loadItems();
+                sender.sendMessage(ChatColor.GREEN + "設定をリロードしました: 成功 " + result.success() + " 件 / 失敗 " + result.fail() + " 件");
                 return true;
             }
 

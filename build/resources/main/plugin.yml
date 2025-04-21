@@ -1,0 +1,16 @@
+name: Invy
+version: 1.0.0-SNAPSHOT
+main: jp.co.epsilonlabs.invy.InvyPlugin
+api-version: '1.21'
+commands:
+  invy:
+    description: Main command for Invy
+    usage: /<command> [gui|reload|grant]
+    permission: invy.use
+permissions:
+  invy.use:
+    default: true
+  invy.reload:
+    default: op
+  invy.grant:
+    default: op

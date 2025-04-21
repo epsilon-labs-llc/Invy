@@ -14,6 +14,11 @@ It allows you to define items via configuration files and summon them through a 
 - Automatically deletes dropped custom items
 - Reload settings and items instantly with `/invy reload`
 - **Multilingual support** (English, Japanese, Custom)
+- 
+## Compatible Minecraft Versions
+
+- Tested with **1.21.5**
+- Other versions are not tested
 
 ## Available Commands
 

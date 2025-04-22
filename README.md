@@ -1,7 +1,10 @@
 # Invy - シンプルなカスタムアイテム管理用プラグイン
 
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/epsilon-labs-llc/Invy/blob/main/README_en.md)
-[![ja](https://img.shields.io/badge/lang-ja-blue.svg)](https://github.com/epsilon-labs-llc/Invy/blob/main/README.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](README_en.md)
+[![ja](https://img.shields.io/badge/lang-ja-blue.svg)](README.md)
+[![Downloads](https://img.shields.io/spiget/downloads/124328?label=Spigot%20Downloads&color=orange)](https://www.spigotmc.org/resources/124328/)
+[![Version](https://img.shields.io/spiget/version/124328?color=brightgreen)](https://www.spigotmc.org/resources/124328/)
+[![Support on Buy Me a Coffee](https://img.shields.io/badge/Support-Buy%20Me%20a%20Coffee-ffdd00?logo=buymeacoffee)](https://buymeacoffee.com/epsilonlabs)
 
 **Invy** は、サーバーに軽量で簡単に導入できるカスタムアイテム管理用プラグインです。  
 設定ファイルから定義したアイテムをGUIで呼び出し、手軽に召喚・使用できます。
@@ -15,10 +18,11 @@
 - `/invy reload` で設定とアイテムを即時反映
 - **多言語対応**（日本語、英語、カスタム）
 
-## 対応Minecraftバージョン
+## 動作環境
 
-- **1.21.5**で動作確認済み
-- 他のバージョンは動作未確認
+- **Java 21** で開発・動作確認済み
+- **Spigot 1.21.x** で確認済み
+- **1.20.6 以前は非対応**
 
 ## コマンド一覧
 
@@ -58,8 +62,15 @@ lang: ja  # en, ja, custom に対応
 ```
 
 ## メッセージのカスタマイズ
-`lang: custom` にすると、`message.yml` が生成されて編集できます。 
+`lang: custom` にすると、`message.yml` が生成されて編集できます。  
 初期状態では日本語と英語に対応しています。
+
+## ご支援のお願い
+
+このプラグインは、合同会社イプシロン・ラボにより運営・開発さしています。  
+いただいたご支援は、開発・保守などに活用させていただきます。
+
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="epsilonlabs" data-color="#5F7FFF" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00" ></script>
 
 ## ライセンス
 このプロジェクトは [MITライセンス](LICENSE) のもとで公開されています。

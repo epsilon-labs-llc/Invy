@@ -1,7 +1,10 @@
 # Invy - A Simple Custom Item Management Plugin
 
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/epsilon-labs-llc/Invy/blob/main/README_en.md)
-[![ja](https://img.shields.io/badge/lang-ja-blue.svg)](https://github.com/epsilon-labs-llc/Invy/blob/main/README.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](README_en.md)
+[![ja](https://img.shields.io/badge/lang-ja-blue.svg)](README.md)
+[![Downloads](https://img.shields.io/spiget/downloads/124328?label=Spigot%20Downloads&color=orange)](https://www.spigotmc.org/resources/124328/)
+[![Version](https://img.shields.io/spiget/version/124328?color=brightgreen)](https://www.spigotmc.org/resources/124328/)
+[![Support on Buy Me a Coffee](https://img.shields.io/badge/Support-Buy%20Me%20a%20Coffee-ffdd00?logo=buymeacoffee)](https://buymeacoffee.com/epsilonlabs)
 
 **Invy** is a lightweight, easy-to-use custom item management plugin for Minecraft servers.  
 It allows you to define items via configuration files and summon them through a simple GUI.
@@ -15,10 +18,11 @@ It allows you to define items via configuration files and summon them through a 
 - Reload settings and items instantly with `/invy reload`
 - **Multilingual support** (English, Japanese, Custom)
 - 
-## Compatible Minecraft Versions
+## Requirements
 
-- Tested with **1.21.5**
-- Other versions are not tested
+- Developed and tested with **Java 21**
+- Confirmed working on **Spigot 1.21.x**
+- **Not supported before 1.20.6**
 
 ## Available Commands
 
@@ -58,8 +62,14 @@ lang: en  # Options: en, ja, custom
 ```
 
 ## Custom Messages
-If you set `lang: custom`, a `message.yml` file will be generated for editing.
+If you set `lang: custom`, a `message.yml` file will be generated for editing.  
 By default, English and Japanese are included.
+
+# Support This Project
+This plugin is maintained by **Epsilon Labs, LLC.**  
+Your support helps cover development and maintenance.
+
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="epsilonlabs" data-color="#5F7FFF" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00" ></script>
 
 ## License
 This project is licensed under the [MIT License]((LICENSE)).

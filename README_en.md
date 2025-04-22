@@ -2,6 +2,7 @@
 
 [![en](https://img.shields.io/badge/lang-en-red.svg)](README_en.md)
 [![ja](https://img.shields.io/badge/lang-ja-blue.svg)](README.md)
+![GitHub Downloads](https://img.shields.io/github/downloads/epsilon-labs-llc/Invy/total?color=orange&label=GitHub%20Downloads)
 [![Downloads](https://img.shields.io/spiget/downloads/124328?label=Spigot%20Downloads&color=orange)](https://www.spigotmc.org/resources/124328/)
 [![Version](https://img.shields.io/spiget/version/124328?color=brightgreen)](https://www.spigotmc.org/resources/124328/)
 [![Support on Buy Me a Coffee](https://img.shields.io/badge/Support-Buy%20Me%20a%20Coffee-ffdd00?logo=buymeacoffee)](https://buymeacoffee.com/epsilonlabs)

@@ -70,7 +70,9 @@ lang: ja  # en, ja, custom に対応
 このプラグインは、合同会社イプシロン・ラボにより運営・開発さしています。  
 いただいたご支援は、開発・保守などに活用させていただきます。
 
-<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="epsilonlabs" data-color="#5F7FFF" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00" ></script>
+<a href="https://www.buymeacoffee.com/epsilonlabs" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" width="200" />
+</a>
 
 ## ライセンス
 このプロジェクトは [MITライセンス](LICENSE) のもとで公開されています。

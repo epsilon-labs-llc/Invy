@@ -65,11 +65,14 @@ lang: en  # Options: en, ja, custom
 If you set `lang: custom`, a `message.yml` file will be generated for editing.  
 By default, English and Japanese are included.
 
-# Support This Project
+## Support This Project
+
 This plugin is maintained by **Epsilon Labs, LLC.**  
 Your support helps cover development and maintenance.
 
-<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="epsilonlabs" data-color="#5F7FFF" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00" ></script>
+<a href="https://www.buymeacoffee.com/epsilonlabs" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" width="200" />
+</a>
 
 ## License
 This project is licensed under the [MIT License]((LICENSE)).

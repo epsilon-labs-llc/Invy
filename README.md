@@ -67,7 +67,7 @@ lang: ja  # en, ja, custom に対応
 
 ## ご支援のお願い
 
-このプラグインは、合同会社イプシロン・ラボにより運営・開発さしています。  
+このプラグインは、合同会社イプシロン・ラボにより運営・開発をしています。  
 いただいたご支援は、開発・保守などに活用させていただきます。
 
 <a href="https://www.buymeacoffee.com/epsilonlabs" target="_blank">

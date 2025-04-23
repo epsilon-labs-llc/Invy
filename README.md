@@ -27,34 +27,86 @@
 
 ## コマンド一覧
 
-| コマンド | 説明 |
-|---------|------|
-| `/invy` | バージョンやヘルプ表示 |
-| `/invy gui` | アイテム一覧GUIを開く |
-| `/invy reload` | 設定とitems.ymlを再読み込み |
-| `/invy grant <player> <time>` | 一時的に `invy.use` を付与 |
+| コマンド                          | 説明                   |
+|-------------------------------|----------------------|
+| `/invy`                       | バージョンやヘルプ表示          |
+| `/invy gui`                   | アイテム一覧GUIを開く         |
+| `/invy reload`                | 設定とitems.ymlを再読み込み   |
+| `/invy grant <player> <time>` | 一時的に `invy.use` を付与  |
 
 ## 権限一覧
 
-| 権限 | 説明                 |
-|------|--------------------|
-| `invy.use` | GUIからアイテムを召喚可能     |
+| 権限            | 説明                 |
+|---------------|--------------------|
+| `invy.use`    | GUIからアイテムを召喚可能     |
 | `invy.reload` | 設定を再読み込み可能         |
-| `invy.grant` | 他プレイヤーに一時的な権限を付与可能 |
+| `invy.grant`  | 他プレイヤーに一時的な権限を付与可能 |
 
-## アイテム定義例（items.yml）
+## アイテムの作り方（items.yml）
 
-```yaml
-items:
-  1:
-    material: STICK
-    name: "&bノックバッカー"
-    lore:
-      - "&7これは最強のノックバック棒"
-    enchants:
-      KNOCKBACK: 999
-    unbreakable: true
-```
+`plugins/Invy/items.yml` にどんなアイテムを召喚したいかを書くだけで、 GUIに表示さ、すぐに使えるようになります。
+最大で**54番**までスロットに登録できます。
+サンプルは[items.yml](src/main/resources/items.yml)を確認してください。
+
+### 注意事項
+- 本プラグインでは、Spigot に存在する `Enchantment` や `Attribute` などの機能を柔軟に利用できますが、**すべての組み合わせに対して動作確認を行っているわけではありません**。
+- 使用環境やバージョンによっては、一部の素材や属性で**正常に動作しない**、または**アイテムデータが破損する**可能性もあります。
+- 万が一、予期しない挙動やデータ破損が発生した場合でも、**開発元はその責任を負いかねます**。
+
+ご自身の責任でご利用いただき、導入前にはバックアップを取ることを推奨します。
+
+### 項目ごとの説明
+
+| 項目            | 説明                                     |
+|---------------|----------------------------------------|
+| `material`    | アイテムの種類（例: STICKやNETHERITE_CHESTPLATE） |
+| `name`        | 表示名（色コード `&b` など使えます）                  |
+| `lore`        | アイテムの説明文                               |
+| `enchants`    | エンチャント名とレベル ※レベルは最大 999 まで対応しています      |
+| `attributes`  | 属性名とその効果の量と適用方法                        |
+| `unbreakable` | `true`  にすると壊れません（デフォルトは`false`）       |
+
+`ID`と`material` は絶対に必要です。他は自由にカスタマイズしてください。
+
+これらは一例なので、**Minecraftに存在する** `Material`、`Enchantment`、`Attribute` を自由に組み合わせて作れます。
+IDの一覧はこちら
+- [Material一覧](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html)
+- [Enchantment一覧](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html)
+
+### 属性について
+`attributes` セクションを使うと、アイテムにさまざまな能力値補正を追加できます。
+たとえば、「移動速度を上げる」「最大体力を増やす」「攻撃力を強化する」などが可能です。
+
+#### 属性の基本構成
+| 項目           | 説明                    |
+|--------------|-----------------------|
+| `amount`     | 効果の量。操作方式により意味が異なります。 |
+| `operation`  | 効果の適用方法               |
+
+`slot` は内部的に ANY に設定されているため、記述不要です。
+
+#### `operation` の種類
+| 値                   | 説明                         | 計算例（元の値 = 10）                           |
+|---------------------|----------------------------|-----------------------------------------|
+| `ADD_NUMBER`        | 基本値に `amount` を直接加算（または減算） | `10 + amount`                           |
+| `ADD_SCALAR`        | 基本値に `(base × amount)` を加算 | `10 + (10 × 0.3)` = `13`                |
+| `MULTIPLY_SCALAR_1` | `(1 + amount)` を掛ける        | `10 × (1 + amount)` = `10 × 1.3` = `13` |
+
+通常、速度系は `ADD_SCALAR`、体力や攻撃力は `ADD_NUMBER` がよく使われます。
+
+#### 属性の例
+| 属性名	             | 効果       | デフォルト　 | 最小値	 | 最大値    |
+|------------------|----------|--------|------|--------|
+| `movement_speed` | 移動速度アップ  | 0.7　   | 0.0  | 1024.0 |
+| `jump_strength`  | ジャンプ力アップ | 0.42	  | 0.0	 | 32.0   |
+| `attack_damage`  | 攻撃力上昇    | 2.0　   | 0.0	 | 2048.0 |
+| `attack_speed`   | 攻撃間隔の短縮  | 4.0	   | 0.0  | 1024.0 |
+| `max_health`     | ハート増加    | 20.0	  | 0.0  | 1024.0 |
+| `armor`          | 防御力増加    | 0.0	   | 0.0	 | 30.0   |
+
+その他一覧
+- [Spigot公式 Attribute 一覧](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/attribute/Attribute.html)
+- [属性一覧（Minecraft Wiki）](https://ja.minecraft.wiki/w/%E5%B1%9E%E6%80%A7#%E5%B1%9E%E6%80%A7%E4%B8%80%E8%A6%A7)
 
 ## config.yml（言語設定）
 
@@ -68,7 +120,7 @@ lang: ja  # en, ja, custom に対応
 
 ## ご支援のお願い
 
-このプラグインは、合同会社イプシロン・ラボにより運営・開発をしています。  
+このプラグインは、**合同会社イプシロン・ラボ**により運営・開発をしています。  
 いただいたご支援は、開発・保守などに活用させていただきます。
 
 <a href="https://www.buymeacoffee.com/epsilonlabs" target="_blank">

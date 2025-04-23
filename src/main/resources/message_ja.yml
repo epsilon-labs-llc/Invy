@@ -1,23 +1,31 @@
 gui.received: "%item% を取得しました！"
-reload.success: "設定をリロードしました: 成功 %success% 件 / 失敗 %fail% 件"
-reload.lang_changed: "言語が変更されました: %oldLang% → %newLang%"
+reload:
+  success: "設定をリロードしました: 成功 %success% 件 / 失敗 %fail% 件"
+  lang_changed: "言語が変更されました: %oldLang% → %newLang%"
 player.not_found: "指定されたプレイヤーは見つかりません。"
 no_permission: "この操作を行う権限がありません。"
 only_player: "このコマンドはプレイヤーのみが使用できます。"
 invalid_subcommand: "無効なサブコマンドです。/invy で確認してください。"
 
-grant.usage: "使用方法: /invy grant <player> <time>"
-grant.success: "%player% にGUI権限を %time% 付与しました。"
-grant.notice: "InvyのGUIを一時的に使用できます！（%time%）"
-grant.expired: "InvyのGUIの使用権限が期限切れになりました。"
-grant.invalid_time: "時間形式が不正です。例: 30s, 3m, 1h, 1d"
+grant:
+  usage: "使用方法: /invy grant <player> <time>"
+  success: "%player% にGUI権限を %time% 付与しました。"
+  notice: "InvyのGUIを一時的に使用できます！（%time%）"
+  expired: "InvyのGUIの使用権限が期限切れになりました。"
+  invalid_time: "時間形式が不正です。例: 30s, 3m, 1h, 1d"
 
-help.gui: "/invy gui - GUIを開く"
-help.reload: "/invy reload - 設定をリロード"
-help.grant: "/invy grant <player> <time> - 権限を一時付与"
+help:
+  gui: "/invy gui - GUIを開く"
+  reload: "/invy reload - 設定をリロード"
+  grant: "/invy grant <player> <time> - 権限を一時付与"
 
-item.invalid_material: "無効な素材です: %material%（ID: %id%）"
-item.section_missing: "items.yml に items セクションが見つかりません。"
-item.load_summary: "アイテム読み込み完了: 成功 %success% 件 / 失敗 %fail% 件"
-item.list_title: "アイテム一覧"
+item:
+  invalid_material: "無効な素材です: %material%（ID: %id%）"
+  section_missing: "items.yml に items セクションが見つかりません。"
+  load_summary: "アイテム読み込み完了: 成功 %success% 件 / 失敗 %fail% 件"
+  list_title: "アイテム一覧"
+  attribute:
+    not_found: "属性が見つかりません: %attribute%"
+    section_invalid: "属性セクションが不正です: %attribute%"
+    modifier_failed: "AttributeModifier 読み込み失敗: %attribute% -> %error%"
 inventory.full: "インベントリに空きがありません！"

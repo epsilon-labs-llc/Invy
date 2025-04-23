@@ -6,6 +6,11 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.Registry;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -17,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.io.File;
+import java.util.Objects;
 
 public class ItemManager {
 
@@ -102,10 +108,50 @@ public class ItemManager {
             ConfigurationSection enchants = itemSection.getConfigurationSection("enchants");
             if (enchants != null) {
                 for (String ench : enchants.getKeys(false)) {
-                    Enchantment enchant = Enchantment.getByKey(NamespacedKey.minecraft(ench.toLowerCase()));
+                    Enchantment enchant = Registry.ENCHANTMENT.get(NamespacedKey.minecraft(ench.toLowerCase()));
                     int level = enchants.getInt(ench);
                     if (enchant != null) {
                         meta.addEnchant(enchant, Math.min(level, 999), true);
+                    }
+                }
+            }
+
+            // 属性
+            ConfigurationSection attributes = itemSection.getConfigurationSection("attributes");
+            if (attributes != null) {
+                for (String attr : attributes.getKeys(false)) {
+                    // 属性の取得
+                    Attribute attribute = Registry.ATTRIBUTE.get(NamespacedKey.minecraft(attr.toLowerCase()));
+                    if (attribute == null) {
+                        Map<String, String> vars = Map.of("attribute", attr);
+                        plugin.getLogger().warning(messages.getFormatted("item.attribute.not_found", vars));
+                        continue;
+                    }
+
+                    // 属性セクションの取得
+                    ConfigurationSection attrSection = attributes.getConfigurationSection(attr);
+                    if (attrSection == null) {
+                        Map<String, String> vars = Map.of("attribute", attr);
+                        plugin.getLogger().warning(messages.getFormatted("item.attribute.section_invalid", vars));
+                        continue;
+                    }
+
+                    // 値の取得
+                    NamespacedKey key = new NamespacedKey(plugin, attr.toLowerCase());
+                    double amount = attrSection.getDouble("amount");
+                    String opStr = attrSection.getString("operation", "ADD_NUMBER").toUpperCase();
+                    AttributeModifier.Operation operation = AttributeModifier.Operation.valueOf(opStr);
+                    EquipmentSlotGroup slotGroup = EquipmentSlotGroup.ANY;
+
+                    try {
+                        AttributeModifier modifier = new AttributeModifier(key, amount, operation, slotGroup);
+                        meta.addAttributeModifier(attribute, modifier);
+                    } catch (Exception e) {
+                        Map<String, String> vars = Map.of(
+                                "attribute", attr,
+                                "error", e.getMessage()
+                        );
+                        plugin.getLogger().warning(messages.getFormatted("item.attribute.modifier_failed", vars));
                     }
                 }
             }

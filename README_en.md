@@ -90,9 +90,17 @@ Levels up to `999` are supported (Some effects may cap out).
 | `EFFICIENCY`  | Faster mining            | 5             | 
 
 - [Spigot Enchantment List](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html)
+- [Minecraft Wiki - Enchanting](https://minecraft.wiki/w/Enchanting)
 
 ### About Attributes
 The `attributes` section allows you to enhance items with combat stats and abilities like speed, health, and damage.
+
+```yaml
+attributes:
+  ATTACK_DAMAGE:
+    amount: 100
+    operation: ADD_NUMBER
+```
 
 #### Basic Structure
 
@@ -125,7 +133,7 @@ Typically, use `ADD_SCALAR` for speed and  `ADD_NUMBER` for health or damage.
 | `ARMOR`          | Extra defense      | 0.0     | 0.0 | 30.0   |
 
 - [Spigot Attribute List](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/attribute/Attribute.html)
-- [Minecraft Wiki - Attributes](https://minecraft.wiki/w/Attribute#Attributes)
+- [Minecraft Wiki - Attributes](https://minecraft.wiki/w/Attribute)
 
 ## Language Setting (config.yml)
 

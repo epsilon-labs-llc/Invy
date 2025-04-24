@@ -3,15 +3,33 @@ items:
     material: STICK
     name: "&bKnockbacker"
     lore:
-      - "&7This is the strongest knockback stick"
+      - "&7Strongest knockback stick"
     enchants:
       KNOCKBACK: 999
     unbreakable: true
 
   2:
-    material: ELYTRA
-    name: "&bSuperman"
+    material: WOODEN_SWORD
+    name: "&bLegendary Wooden Sword"
+    lore:
+      - "&8There is... something in this wood."
     attributes:
-      generic_flying_speed:
-        amount: 999
-        slot: CHEST
+      ATTACK_DAMAGE:
+        amount: 100
+        operation: ADD_NUMBER
+      ATTACK_SPEED:
+        amount: 100
+        operation: ADD_SCALAR
+
+  3:
+    material: GOLDEN_APPLE
+    name: "&6Super Speed Apple"
+    lore:
+      - "&7Grants incredible speed"
+    potion_effects:
+      - type: SPEED
+        duration: 60
+        level: 99
+        ambient: true
+        particles: true
+        icon: true

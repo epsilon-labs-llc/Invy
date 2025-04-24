@@ -55,14 +55,15 @@
 
 ### 項目ごとの説明
 
-| 項目            | 説明                                |
-|---------------|-----------------------------------|
-| `material`    | アイテムの種類 (例: `STICK`など)            |
-| `name`        | 表示名 (色コード `&b` など使えます)            |
-| `lore`        | アイテムの説明文                          |
-| `enchants`    | エンチャント名とレベル                       |
-| `attributes`  | 属性名とその効果の量と適用方法                   |
-| `unbreakable` | `true`  にすると壊れません (デフォルトは`false`) |
+| 項目               | 説明                                |
+|------------------|-----------------------------------|
+| `material`       | アイテムの種類 (例: `STICK`など)            |
+| `name`           | 表示名 (色コード `&b` など使えます)            |
+| `lore`           | アイテムの説明文                          |
+| `enchants`       | エンチャント名とレベル                       |
+| `attributes`     | 属性名とその効果の量と適用方法                   |
+| `potion_effects` | ポーション効果の種類とその詳細設定                 |
+| `unbreakable`    | `true`  にすると壊れません (デフォルトは`false`) |
 
 `ID`と`material` は絶対に必要です。他は自由にカスタマイズしてください。  
 `material` の一覧は [Spigot Material 一覧](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) を確認してください。
@@ -92,10 +93,21 @@ enchants:
 | `EFFICIENCY`  | 採掘スピードアップ | 5	        | 
 
 - [Spigot Enchantment 一覧](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html)
+- [Minecraft Wiki - エンチャント](https://ja.minecraft.wiki/w/%E3%82%A8%E3%83%B3%E3%83%81%E3%83%A3%E3%83%B3%E3%83%88)
 
 ### 属性について
 `attributes` セクションを使うことで、アイテムにさまざまな能力値補正を追加できます。  
 たとえば、「移動速度を上げる」「最大体力を増やす」「攻撃力を強化する」などが可能です。
+
+```yaml
+attributes:
+  ATTACK_DAMAGE:
+    amount: 100
+    operation: ADD_NUMBER
+  ATTACK_SPEED:
+    amount: 100
+    operation: ADD_SCALAR
+```
 
 #### 属性の基本構成
 | 項目          | 説明                    |
@@ -125,7 +137,44 @@ enchants:
 | `ARMOR`          | 防御力増加    | 0.0    | 0.0	 | 30.0   |
 
 - [Spigot Attribute 一覧](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/attribute/Attribute.html)
-- [属性一覧（Minecraft Wiki）](https://ja.minecraft.wiki/w/%E5%B1%9E%E6%80%A7#%E5%B1%9E%E6%80%A7%E4%B8%80%E8%A6%A7)
+- [Minecraft Wiki - 属性](https://ja.minecraft.wiki/w/%E5%B1%9E%E6%80%A7)
+
+### ポーション効果について
+`potion_effects` セクションを使うことで、アイテムを持ったときにプレイヤーにポーション効果を与えることができます。
+たとえば「常時スピードアップ」や「攻撃時に弱体化を付与」などのカスタム効果を設定できます。
+
+```yaml
+potion_effects:
+  SPEED:
+    duration: 60
+    amplifier: 99
+    ambient: true
+    particles: true
+    icon: true
+```
+
+#### ポーション効果の基本構成
+
+| 項目          | 説明               |
+|-------------|------------------|
+| `SPEED`     | ポーション効果の種類。      |
+| `duration`  | 効果時間（秒単位）        |
+| `amplifier` | 効果レベル            |
+| `ambient`   | 効果のパーティクルを少なくするか |
+| `particles` | 効果のパーティクルを表示するか  |
+| `icon`      | 画面右上にアイコンを表示するか  |
+
+#### 持続時間について
+- `duration` は秒単位で指定してください。
+- 実際には内部的に **tick単位** (1秒 = 20tick) で処理されています。
+- Bukkit/Minecraftの仕様上、**最大で** `2,147,483,647 tick`（**約 24.8 日**）まで指定可能です。
+- 実用上は `9999999`（約 2.7 日）にすれば、 **"ほぼ無限"** として利用できます。
+
+#### ポーション効果の一覧
+公式ドキュメントまたは Wiki を参照してください
+
+- [Spigot PotionEffectType 一覧](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html)
+- [Minecraft Wiki - ステータス効果](https://ja.minecraft.wiki/w/%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E5%8A%B9%E6%9E%9C)
 
 ## 言語設定 (config.yml)
 

@@ -27,5 +27,7 @@ item:
   attribute:
     not_found: "Attribute not found: %attribute"
     section_invalid: "Invalid attribute section: %attribute%"
-    modifier_failed: "Failed to read AttributeModifier: %attribute% -> %error%"
+  potion_effect:
+    meta_invalid: "Failed to get PotionMeta"
+    not_found: "Potion effect not found: %potion_effect%"
 inventory.full: "There is no space in inventory!"

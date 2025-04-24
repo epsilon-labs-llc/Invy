@@ -49,7 +49,8 @@
 サンプルは [items.yml](src/main/resources/items.yml) を確認してください。
 
 ### 注意事項
-- 本プラグインでは、Spigot に存在する `Enchantment` や `Attribute` などの機能を柔軟に利用できますが、**すべての組み合わせに対して動作確認を行っているわけではありません**。
+- 本プラグインでは、Spigot に存在する `Enchantment` や `Attribute` や `PotionEffect` などの機能を柔軟に利用できますが、**すべての組み合わせに対して動作確認を行っているわけではありません**。
+- エンチャントと属性は重複可能ですが、 **ポーション効果は完全に別のメタデータなので重複できません**。
 - 使用環境やバージョンによっては、一部の素材や属性で**正常に動作しない**、または**アイテムデータが破損する**可能性もあります。
 - 万が一、予期しない挙動やデータ破損が発生した場合でも、**私たちはその責任を負いかねます**。
 
@@ -60,10 +61,10 @@
 | `material`       | アイテムの種類 (例: `STICK`など)            |
 | `name`           | 表示名 (色コード `&b` など使えます)            |
 | `lore`           | アイテムの説明文                          |
+| `unbreakable`    | `true`  にすると壊れません (デフォルトは`false`) |
 | `enchants`       | エンチャント名とレベル                       |
 | `attributes`     | 属性名とその効果の量と適用方法                   |
 | `potion_effects` | ポーション効果の種類とその詳細設定                 |
-| `unbreakable`    | `true`  にすると壊れません (デフォルトは`false`) |
 
 `ID`と`material` は絶対に必要です。他は自由にカスタマイズしてください。  
 `material` の一覧は [Spigot Material 一覧](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) を確認してください。
@@ -140,14 +141,15 @@ attributes:
 - [Minecraft Wiki - 属性](https://ja.minecraft.wiki/w/%E5%B1%9E%E6%80%A7)
 
 ### ポーション効果について
-`potion_effects` セクションを使うことで、アイテムを持ったときにプレイヤーにポーション効果を与えることができます。
-たとえば「常時スピードアップ」や「攻撃時に弱体化を付与」などのカスタム効果を設定できます。
+`potion_effects` セクションを使うことで、 ポーションに独自の効果を複数追加できます。
+たとえば「常時スピードアップ」や「攻撃時に弱体化を付与」などのカスタム効果を設定できます。　
+ポーション効果は `material` が　`POTION`, `SPLASH_POTION`, `LINGERING_POTION` のみに有効です
 
 ```yaml
 potion_effects:
   SPEED:
     duration: 60
-    amplifier: 99
+    level: 99
     ambient: true
     particles: true
     icon: true
@@ -159,7 +161,7 @@ potion_effects:
 |-------------|------------------|
 | `SPEED`     | ポーション効果の種類。      |
 | `duration`  | 効果時間（秒単位）        |
-| `amplifier` | 効果レベル            |
+| `level`     | 効果レベル            |
 | `ambient`   | 効果のパーティクルを少なくするか |
 | `particles` | 効果のパーティクルを表示するか  |
 | `icon`      | 画面右上にアイコンを表示するか  |

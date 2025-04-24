@@ -48,7 +48,8 @@ You can register **up to 54 items**.
 Check the sample [items.yml](src/main/resources/items.yml).
 
 ### Notes
-- This plugin supports Bukkit/Spigot features like `Enchantment` and `Attribute`, but not all combinations are tested or guaranteed to work.
+- This plugin supports Bukkit/Spigot features like `Enchantment`, `Attribute` and `PotionEffect`, but not all combinations are tested or guaranteed to work.
+- Enchantments and Attributes can be duplicated, but **Potion Effects are completely separate metadata and cannot be duplicated**.
 - Depending on your environment or Minecraft version, **some materials or attributes may not function properly**, or may **corrupt item data**.
 - In the unlikely event of unexpected behavior or data corruption, **We are not responsible**.
 
@@ -59,9 +60,9 @@ Check the sample [items.yml](src/main/resources/items.yml).
 | `material`    | Type of item (e.g., `STICK`)                                  |
 | `name`        | Display name (supports color codes like `&b`)                 |
 | `lore`        | Description text for the item                                 |
+| `unbreakable` | Set to `true` to prevent durability loss (Default is `false`) |
 | `enchants`    | Enchantments and their levels                                 |
 | `attributes`  | Attributes with values and application methods                |
-| `unbreakable` | Set to `true` to prevent durability loss (Default is `false`) |
 
 `ID`and `material` are required. Everything else is optional and customizable.
 See: [Spigot Material List](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) 

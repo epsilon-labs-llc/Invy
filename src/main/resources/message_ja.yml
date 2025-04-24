@@ -27,5 +27,7 @@ item:
   attribute:
     not_found: "属性が見つかりません: %attribute%"
     section_invalid: "属性セクションが不正です: %attribute%"
-    modifier_failed: "AttributeModifier 読み込み失敗: %attribute% -> %error%"
+  potion_effect:
+    meta_invalid: "PotionMeta の取得に失敗しました"
+    not_found: "ポーション効果が見つかりません: %potion_effect%"
 inventory.full: "インベントリに空きがありません！"

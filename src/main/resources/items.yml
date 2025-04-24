@@ -1,9 +1,9 @@
 items:
   1:
     material: STICK
-    name: "&bKnockbacker"
+    name: "&9The Yeeter"
     lore:
-      - "&7Strongest knockback stick"
+      - "&7Sends mobs flying like rockets."
     enchants:
       KNOCKBACK: 999
     unbreakable: true
@@ -12,7 +12,7 @@ items:
     material: WOODEN_SWORD
     name: "&bLegendary Wooden Sword"
     lore:
-      - "&8There is... something in this wood."
+      - "&7A stick... with serious issues."
     attributes:
       ATTACK_DAMAGE:
         amount: 100
@@ -22,10 +22,10 @@ items:
         operation: ADD_SCALAR
 
   3:
-    material: GOLDEN_APPLE
-    name: "&6Super Speed Apple"
+    material: POTION
+    name: "&5Suspicious Speed Potion"
     lore:
-      - "&7Grants incredible speed"
+      - "&7Too fast to be legal."
     potion_effects:
       - type: SPEED
         duration: 60

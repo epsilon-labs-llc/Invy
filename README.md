@@ -27,12 +27,12 @@
 
 ## コマンド一覧
 
-| コマンド                          | 説明                   |
-|-------------------------------|----------------------|
-| `/invy`                       | バージョンやヘルプ表示          |
-| `/invy gui`                   | アイテム一覧GUIを開く         |
-| `/invy reload`                | 設定とitems.ymlを再読み込み   |
-| `/invy grant <player> <time>` | 一時的に `invy.use` を付与  |
+| コマンド                          | 説明                  |
+|-------------------------------|---------------------|
+| `/invy`                       | バージョンやヘルプ表示         |
+| `/invy gui`                   | アイテム一覧GUIを開く        |
+| `/invy reload`                | 設定とitems.ymlを再読み込み  |
+| `/invy grant <player> <time>` | 一時的に `invy.use` を付与 |
 
 ## 権限一覧
 
@@ -44,46 +44,66 @@
 
 ## アイテムの作り方（items.yml）
 
-`plugins/Invy/items.yml` にどんなアイテムを召喚したいかを書くだけで、 GUIに表示さ、すぐに使えるようになります。
-最大で**54番**までスロットに登録できます。
-サンプルは[items.yml](src/main/resources/items.yml)を確認してください。
+`plugins/Invy/items.yml` にどんなアイテムを召喚したいかを書くだけで、 GUIに表示さ、すぐに使えるようになります。  
+最大で**54番**スロットまでに登録できます。
+サンプルは [items.yml](src/main/resources/items.yml) を確認してください。
 
 ### 注意事項
 - 本プラグインでは、Spigot に存在する `Enchantment` や `Attribute` などの機能を柔軟に利用できますが、**すべての組み合わせに対して動作確認を行っているわけではありません**。
 - 使用環境やバージョンによっては、一部の素材や属性で**正常に動作しない**、または**アイテムデータが破損する**可能性もあります。
-- 万が一、予期しない挙動やデータ破損が発生した場合でも、**開発元はその責任を負いかねます**。
-
-ご自身の責任でご利用いただき、導入前にはバックアップを取ることを推奨します。
+- 万が一、予期しない挙動やデータ破損が発生した場合でも、**私たちはその責任を負いかねます**。
 
 ### 項目ごとの説明
 
-| 項目            | 説明                                     |
-|---------------|----------------------------------------|
-| `material`    | アイテムの種類（例: STICKやNETHERITE_CHESTPLATE） |
-| `name`        | 表示名（色コード `&b` など使えます）                  |
-| `lore`        | アイテムの説明文                               |
-| `enchants`    | エンチャント名とレベル ※レベルは最大 999 まで対応しています      |
-| `attributes`  | 属性名とその効果の量と適用方法                        |
-| `unbreakable` | `true`  にすると壊れません（デフォルトは`false`）       |
+| 項目            | 説明                                |
+|---------------|-----------------------------------|
+| `material`    | アイテムの種類 (例: `STICK`など)            |
+| `name`        | 表示名 (色コード `&b` など使えます)            |
+| `lore`        | アイテムの説明文                          |
+| `enchants`    | エンチャント名とレベル                       |
+| `attributes`  | 属性名とその効果の量と適用方法                   |
+| `unbreakable` | `true`  にすると壊れません (デフォルトは`false`) |
 
-`ID`と`material` は絶対に必要です。他は自由にカスタマイズしてください。
+`ID`と`material` は絶対に必要です。他は自由にカスタマイズしてください。  
+`material` の一覧は [Spigot Material 一覧](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) を確認してください。
 
-これらは一例なので、**Minecraftに存在する** `Material`、`Enchantment`、`Attribute` を自由に組み合わせて作れます。
-IDの一覧はこちら
-- [Material一覧](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html)
-- [Enchantment一覧](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html)
+### エンチャントについて
+`enchants` セクションを使うことで、アイテムにさまざまなエンチャントを付与できます。
+攻撃・防御・補助などの様々な効果をアイテムに追加が可能です。
+
+```yaml
+enchants:
+  SHARPNESS: 100
+  FIRE_ASPECT: 10
+  KNOCKBACK: 999
+```
+`enchants` セクション内に `エンチャント名: レベル` の形で記述してください。
+レベルは最大 999 まで対応しています。（効果は制限ある場合があります）
+
+#### エンチャントの例
+
+| エンチャント名	      | 効果        | 最大Lv (通常) |
+|---------------|-----------|-----------|
+| `SHARPNESS`   | 攻撃力アップ    | 5　        |
+| `FIRE_ASPECT` | 火を付ける     | 2	        | 
+| `KNOCKBACK`   | ノックバック強化  | 2　        | 
+| `PROTECTION`  | 防御力アップ    | 4         | 
+| `UNBREAKING`  | 耐久性アップ    | 3	        | 
+| `EFFICIENCY`  | 採掘スピードアップ | 5	        | 
+
+- [Spigot Enchantment 一覧](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html)
 
 ### 属性について
-`attributes` セクションを使うと、アイテムにさまざまな能力値補正を追加できます。
+`attributes` セクションを使うことで、アイテムにさまざまな能力値補正を追加できます。  
 たとえば、「移動速度を上げる」「最大体力を増やす」「攻撃力を強化する」などが可能です。
 
 #### 属性の基本構成
-| 項目           | 説明                    |
-|--------------|-----------------------|
-| `amount`     | 効果の量。操作方式により意味が異なります。 |
-| `operation`  | 効果の適用方法               |
+| 項目          | 説明                    |
+|-------------|-----------------------|
+| `amount`    | 効果の量。操作方式により意味が異なります。 |
+| `operation` | 効果の適用方法               |
 
-`slot` は内部的に ANY に設定されているため、記述不要です。
+`slot` は内部的に `ANY` に設定されているため、記述不要です。
 
 #### `operation` の種類
 | 値                   | 説明                         | 計算例（元の値 = 10）                           |
@@ -97,18 +117,17 @@ IDの一覧はこちら
 #### 属性の例
 | 属性名	             | 効果       | デフォルト　 | 最小値	 | 最大値    |
 |------------------|----------|--------|------|--------|
-| `movement_speed` | 移動速度アップ  | 0.7　   | 0.0  | 1024.0 |
-| `jump_strength`  | ジャンプ力アップ | 0.42	  | 0.0	 | 32.0   |
-| `attack_damage`  | 攻撃力上昇    | 2.0　   | 0.0	 | 2048.0 |
-| `attack_speed`   | 攻撃間隔の短縮  | 4.0	   | 0.0  | 1024.0 |
-| `max_health`     | ハート増加    | 20.0	  | 0.0  | 1024.0 |
-| `armor`          | 防御力増加    | 0.0	   | 0.0	 | 30.0   |
+| `MOVEMENT_SPEED` | 移動速度アップ  | 0.7    | 0.0  | 1024.0 |
+| `JUMP_STRENGTH`  | ジャンプ力アップ | 0.42   | 0.0	 | 32.0   |
+| `ATTACK_DAMAGE`  | 攻撃力上昇    | 2.0　   | 0.0	 | 2048.0 |
+| `ATTACK_SPEED`   | 攻撃間隔の短縮  | 4.0    | 0.0  | 1024.0 |
+| `MAX_HEALTH`     | ハート増加    | 20.0   | 0.0  | 1024.0 |
+| `ARMOR`          | 防御力増加    | 0.0    | 0.0	 | 30.0   |
 
-その他一覧
-- [Spigot公式 Attribute 一覧](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/attribute/Attribute.html)
+- [Spigot Attribute 一覧](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/attribute/Attribute.html)
 - [属性一覧（Minecraft Wiki）](https://ja.minecraft.wiki/w/%E5%B1%9E%E6%80%A7#%E5%B1%9E%E6%80%A7%E4%B8%80%E8%A6%A7)
 
-## config.yml（言語設定）
+## 言語設定 (config.yml)
 
 ```yaml
 lang: ja  # en, ja, custom に対応

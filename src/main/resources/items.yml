@@ -27,7 +27,7 @@ items:
     lore:
       - "&7Too fast to be legal."
     potion_effects:
-      - type: SPEED
+      SPEED:
         duration: 60
         level: 99
         ambient: true

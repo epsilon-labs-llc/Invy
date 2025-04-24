@@ -2,27 +2,25 @@ package jp.co.epsilonlabs.invy.item;
 
 import jp.co.epsilonlabs.invy.InvyPlugin;
 import jp.co.epsilonlabs.invy.util.MessageManager;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.Registry;
 import org.bukkit.inventory.EquipmentSlotGroup;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.ChatColor;
-import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.io.File;
-import java.util.Objects;
 
 public class ItemManager {
 
@@ -104,6 +102,9 @@ public class ItemManager {
                 meta.setLore(lore);
             }
 
+            // 耐久無限の設定
+            meta.setUnbreakable(itemSection.getBoolean("unbreakable", false));
+
             // エンチャント
             ConfigurationSection enchants = itemSection.getConfigurationSection("enchants");
             if (enchants != null) {
@@ -143,23 +144,68 @@ public class ItemManager {
                     AttributeModifier.Operation operation = AttributeModifier.Operation.valueOf(opStr);
                     EquipmentSlotGroup slotGroup = EquipmentSlotGroup.ANY;
 
-                    try {
-                        AttributeModifier modifier = new AttributeModifier(key, amount, operation, slotGroup);
-                        meta.addAttributeModifier(attribute, modifier);
-                    } catch (Exception e) {
-                        Map<String, String> vars = Map.of(
-                                "attribute", attr,
-                                "error", e.getMessage()
-                        );
-                        plugin.getLogger().warning(messages.getFormatted("item.attribute.modifier_failed", vars));
-                    }
+                    // 属性の追加
+                    AttributeModifier modifier = new AttributeModifier(key, amount, operation, slotGroup);
+                    meta.addAttributeModifier(attribute, modifier);
                 }
             }
 
-            // 耐久無限の設定
-            meta.setUnbreakable(itemSection.getBoolean("unbreakable", false));
+            // ポーション効果
+            ConfigurationSection potion_effects = itemSection.getConfigurationSection("potion_effects");
+            if (potion_effects != null && (material == Material.POTION || material == Material.SPLASH_POTION || material == Material.LINGERING_POTION)) {
+                // PotionMeta にキャスト
+                if (!(meta instanceof PotionMeta potionMeta)) {
+                    plugin.getLogger().warning(messages.get("item.potion_effect.meta_invalid"));
+                    continue;
+                }
 
-            // アイテムの属性・エンチャント表示を隠す
+                for (String potion_effect : potion_effects.getKeys(false)) {
+                    // ポーション効果の取得
+                    PotionEffectType type = PotionEffectType.getByName(potion_effect.toUpperCase());
+                    if (type == null) {
+                        Map<String, String> vars = Map.of("potion_effect", potion_effect);
+                        plugin.getLogger().warning(messages.getFormatted("item.potion_effect.not_found", vars));
+                        continue;
+                    }
+
+                    // ポーション効果セクションの取得
+                    int durationSeconds = potion_effects.getInt(potion_effect + ".duration", 0);
+                    int level = potion_effects.getInt(potion_effect + ".level", 0);
+                    boolean ambient = potion_effects.getBoolean(potion_effect + ".ambient", false);
+                    boolean particles = potion_effects.getBoolean(potion_effect + ".particles", true);
+                    boolean icon = potion_effects.getBoolean(potion_effect + ".icon", true);
+
+                    // tick変換（負なら "無限" として Integer.MAX_VALUE に）
+                    int durationTicks = (durationSeconds < 0) ? Integer.MAX_VALUE : durationSeconds * 20;
+
+                    // 効果の追加
+                    PotionEffect effect = new PotionEffect(type, durationTicks, level, ambient, particles, icon);
+                    potionMeta.addCustomEffect(effect, true);
+                }
+
+                // カスタムアイテム識別用のNBTフラグを設定
+                NamespacedKey key = new NamespacedKey(plugin, "custom_item");
+                potionMeta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
+
+                // メタ情報をポーションに適用
+                item.setItemMeta(potionMeta);
+            } else {
+                // 通常アイテム
+                // アイテムのエンチャント・属性表示を隠す
+                meta.addItemFlags(
+                        ItemFlag.HIDE_ENCHANTS,
+                        ItemFlag.HIDE_ATTRIBUTES,
+                        ItemFlag.HIDE_UNBREAKABLE
+                );
+
+                // カスタムアイテム識別用のNBTフラグを設定
+                NamespacedKey key = new NamespacedKey(plugin, "custom_item");
+                meta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
+
+                // メタ情報をアイテムに適用
+                item.setItemMeta(meta);
+            }
+            // アイテムのエンチャント・属性表示を隠す
             meta.addItemFlags(
                     ItemFlag.HIDE_ENCHANTS,
                     ItemFlag.HIDE_ATTRIBUTES,
@@ -172,6 +218,8 @@ public class ItemManager {
 
             // メタ情報をアイテムに適用
             item.setItemMeta(meta);
+
+            // アイテム登録
             items.put(id, item);
             success++;
         }

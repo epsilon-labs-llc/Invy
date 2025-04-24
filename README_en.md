@@ -112,7 +112,7 @@ attributes:
 
 You don't need to set `slot`, it's automatically set to `ANY`
 
-#### `operation` Types
+#### operation Types
 
 | Operation           | Description                  | Example (base = 10)                     |
 |---------------------|------------------------------|-----------------------------------------|

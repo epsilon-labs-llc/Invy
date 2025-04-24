@@ -1,7 +1,7 @@
 items:
   1:
     material: STICK
-    name: "&9The Yeeter"
+    name: "&9The Stick"
     lore:
       - "&7Sends mobs flying like rockets."
     enchants:
@@ -10,26 +10,86 @@ items:
 
   2:
     material: WOODEN_SWORD
-    name: "&bLegendary Wooden Sword"
+    name: "&6Legendary Wooden Sword"
     lore:
       - "&7A stick... with serious issues."
     attributes:
       ATTACK_DAMAGE:
         amount: 100
         operation: ADD_NUMBER
+        slots: HAND
       ATTACK_SPEED:
         amount: 100
         operation: ADD_SCALAR
+        slots: HAND
 
   3:
-    material: POTION
-    name: "&5Suspicious Speed Potion"
+    material: BOW
+    name: "&bArcstorm Bow"
     lore:
-      - "&7Too fast to be legal."
+      - "&7Triple the arrows, triple the chaos."
+    enchants:
+      MULTISHOT: 10
+      PIERCING: 10
+      QUICK_CHARGE: 10
+      INFINITY: 1
+    attributes:
+      FOLLOW_RANGE:
+        amount: 30
+        operation: ADD_NUMBER
+        slots: HAND
+    unbreakable: true
+
+  4:
+    material: DIAMOND_BOOTS
+    name: "&3Skywalker’s Boots"
+    lore:
+      - "&7Light as air, leap like a rabbit"
+    enchants:
+      FEATHER_FALLING: 999
+      UNBREAKING: 30
+      MENDING: 1
+    attributes:
+      JUMP_STRENGTH:
+        amount: 3
+        operation: ADD_NUMBER
+        slots: FEET
+      STEP_HEIGHT:
+        amount: -0.6
+        operation: ADD_NUMBER
+        slots: FEET
+      GRAVITY:
+        amount: 0.02
+        operation: ADD_NUMBER
+        slots: FEET
+
+  5:
+    material: SPLASH_POTION
+    name: "&dIllegal Velocity"
+    lore:
+      - "&Too fast for fair play. Handle with care."
     potion_effects:
       SPEED:
         duration: 60
-        level: 99
+        level: 10
+        ambient: true
+        particles: true
+        icon: true
+
+  6:
+    material: POTION
+    name: "&4Bloodlust Elixir"
+    lore:
+      - "&7Power courses through you... and so does the venom."
+    potion_effects:
+      STRENGTH:
+        duration: 100
+        level: 60
+        particles: false
+        icon: true
+      POISON:
+        duration: 100
+        level: 3
         ambient: true
         particles: true
         icon: true

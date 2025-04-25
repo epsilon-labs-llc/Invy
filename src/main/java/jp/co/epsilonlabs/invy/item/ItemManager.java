@@ -142,7 +142,17 @@ public class ItemManager {
                     double amount = attrSection.getDouble("amount");
                     String opStr = attrSection.getString("operation", "ADD_NUMBER").toUpperCase();
                     AttributeModifier.Operation operation = AttributeModifier.Operation.valueOf(opStr);
-                    EquipmentSlotGroup slotGroup = EquipmentSlotGroup.ANY;
+
+                    // スロットの取得
+                    String slotStr = attrSection.getString("slots", "ANY").toUpperCase();
+                    EquipmentSlotGroup slotGroup;
+                    try {
+                        slotGroup = EquipmentSlotGroup.getByName(slotStr);
+                    } catch (IllegalArgumentException e) {
+                        Map<String, String> vars = Map.of("slot", slotStr, "attribute", attr);
+                        plugin.getLogger().warning(messages.getFormatted("item.attribute.invalid_slot", vars));
+                        slotGroup = EquipmentSlotGroup.ANY;
+                    }
 
                     // 属性の追加
                     AttributeModifier modifier = new AttributeModifier(key, amount, operation, slotGroup);

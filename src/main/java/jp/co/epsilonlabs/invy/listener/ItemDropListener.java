@@ -22,10 +22,10 @@ public class ItemDropListener implements Listener {
     public void onItemDrop(PlayerDropItemEvent event) {
         ItemStack dropped = event.getItemDrop().getItemStack();
 
-        // カスタムアイテムかを判定（NBTタグ 'custom_item' がついているか）
+        // カスタムアイテムかを判定（NBTタグ 'invy_item' がついているか）
         if (dropped.hasItemMeta()) {
             ItemMeta meta = dropped.getItemMeta();
-            NamespacedKey key = new NamespacedKey(plugin, "custom_item");
+            NamespacedKey key = new NamespacedKey(plugin, "invy_item");
 
             if (meta != null && meta.getPersistentDataContainer().has(key, PersistentDataType.BYTE)) {
                 // タグ付きなら削除（ドロップ無効）

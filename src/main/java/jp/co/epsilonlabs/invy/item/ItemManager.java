@@ -194,7 +194,7 @@ public class ItemManager {
                 }
 
                 // カスタムアイテム識別用のNBTフラグを設定
-                NamespacedKey key = new NamespacedKey(plugin, "custom_item");
+                NamespacedKey key = new NamespacedKey(plugin, "invy_item");
                 potionMeta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
 
                 // メタ情報をポーションに適用
@@ -209,7 +209,7 @@ public class ItemManager {
                 );
 
                 // カスタムアイテム識別用のNBTフラグを設定
-                NamespacedKey key = new NamespacedKey(plugin, "custom_item");
+                NamespacedKey key = new NamespacedKey(plugin, "invy_item");
                 meta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
 
                 // メタ情報をアイテムに適用
@@ -223,7 +223,7 @@ public class ItemManager {
             );
 
             // カスタムアイテム識別用のNBTフラグを設定
-            NamespacedKey key = new NamespacedKey(plugin, "custom_item");
+            NamespacedKey key = new NamespacedKey(plugin, "invy_item");
             meta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
 
             // メタ情報をアイテムに適用

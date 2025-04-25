@@ -4,6 +4,8 @@ import jp.co.epsilonlabs.invy.item.ItemManager;
 import jp.co.epsilonlabs.invy.gui.InvyGUI;
 import jp.co.epsilonlabs.invy.listener.InventoryClickListener;
 import jp.co.epsilonlabs.invy.listener.ItemDropListener;
+import jp.co.epsilonlabs.invy.listener.ItemInventoryListener;
+import jp.co.epsilonlabs.invy.listener.ItemDeathListener;
 import jp.co.epsilonlabs.invy.util.MessageManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,6 +43,8 @@ public final class InvyPlugin extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new InventoryClickListener(this), this);
         pluginManager.registerEvents(new ItemDropListener(this), this);
+        pluginManager.registerEvents(new ItemInventoryListener(this), this);
+        pluginManager.registerEvents(new ItemDeathListener(this), this);
 
         // コマンドの登録
         InvyCommand commandHandler = new InvyCommand(this);

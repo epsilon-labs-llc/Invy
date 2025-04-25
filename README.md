@@ -196,15 +196,35 @@ potion_effects:
 - [Spigot PotionEffectType 一覧](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html)
 - [Minecraft Wiki - ステータス効果](https://ja.minecraft.wiki/w/%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E5%8A%B9%E6%9E%9C)
 
-## 言語設定 (config.yml)
+## 設定について (config.yml)
+`plugins/Invy/config.yml` では、プラグインの動作や言語設定をカスタマイズできます。
+
+### 言語設定
 
 ```yaml
-lang: ja  # en, ja, custom に対応
+lang: ja
 ```
 
-## メッセージのカスタマイズ
-`lang: custom` にすると、`message.yml` が生成されて編集できます。  
-初期状態では日本語と英語に対応しています。
+- `ja`: 日本語で表示されます。
+- `en`: 英語で表示されます。
+- `custom`: `message.yml` が自動生成され、内容を自由に編集できます。
+
+### 機能設定
+
+```yaml
+features:
+  prevent_drop: true
+  prevent_storage: true
+  prevent_death_drop: true
+```
+
+|項目名	  | 内容                                                                                        |
+|--|-------------------------------------------------------------------------------------------|
+|`prevent_drop`  | プレイヤーがカスタムアイテムを地面にドロップできなくなります。                                                           |
+|`prevent_storage`  | 	カスタムアイテムを **チェスト** / **シュルカーボックス** / **樽** に入れられなくなります。<br>※**エンダーチェスト**は例外として許可 されています。 |
+|`prevent_death_drop`  | プレイヤーが死亡してもカスタムアイテムがドロップされなくなります。                                                         |
+
+`features` セクションを使うことで、簡単にゲームバランスの調整や不正対策ができます。
 
 ## ご支援のお願い
 

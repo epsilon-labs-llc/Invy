@@ -7,3 +7,17 @@
 # - ja → 日本語
 # - custom → Custom messages
 lang: en
+
+# Feature Toggles
+features:
+
+  # Prevent players from dropping custom items
+  prevent_drop: true
+
+  # Prevent storing custom items in containers
+  # - Applies to: Chest, Skulker Box, Barrel
+  # - Exception: Ender Chest is allowed
+  prevent_storage: true
+
+  # Prevent custom items from being dropped on player death
+  prevent_death_drop: true

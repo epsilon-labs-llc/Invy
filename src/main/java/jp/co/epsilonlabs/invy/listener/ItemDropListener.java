@@ -20,17 +20,22 @@ public class ItemDropListener implements Listener {
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {
-        ItemStack dropped = event.getItemDrop().getItemStack();
+        // 設定ファイルで無効化されていればスキップ
+        if (!plugin.getConfig().getBoolean("features.prevent_drop", false)) return;
 
-        // カスタムアイテムかを判定（NBTタグ 'invy_item' がついているか）
-        if (dropped.hasItemMeta()) {
-            ItemMeta meta = dropped.getItemMeta();
-            NamespacedKey key = new NamespacedKey(plugin, "invy_item");
+        // 操作中のアイテムを取得
+        ItemStack item = event.getItemDrop().getItemStack();
+        if (!item.hasItemMeta()) return;
 
-            if (meta != null && meta.getPersistentDataContainer().has(key, PersistentDataType.BYTE)) {
-                // タグ付きなら削除（ドロップ無効）
-                event.getItemDrop().remove();
-            }
-        }
+        // アイテム内のメタデータの取得
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+
+        // カスタムアイテムかどうか判定
+        NamespacedKey key = new NamespacedKey(plugin, "invy_item");
+        if (!meta.getPersistentDataContainer().has(key, PersistentDataType.BYTE)) return;
+
+        // アイテムを削除（ドロップ無効）
+        event.getItemDrop().remove();
     }
 }

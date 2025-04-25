@@ -15,7 +15,7 @@ features:
   prevent_drop: true
 
   # Prevent storing custom items in containers
-  # - Applies to: Chest, Skulker Box, Barrel
+  # - Applies to: Chest, Shulker Box, Barrel
   # - Exception: Ender Chest is allowed
   prevent_storage: true
 

@@ -10,6 +10,12 @@
 **Invy** is a lightweight, easy-to-use custom item management plugin for Minecraft servers.  
 You can summon and use items easily through a GUI based on definitions from a configuration file.
 
+**Summoning Custom Items from GUI**
+![Image of Summoning Custom Items from GUI](imgs/summon_items.gif)
+
+**Using Custom Items**
+![Image of Using Custom Items](imgs/use_items.gif)
+
 ## Features
 
 - **File-based** item definitions via `items.yml`

@@ -7,7 +7,7 @@
 [![Version](https://img.shields.io/spiget/version/124328?color=brightgreen)](https://www.spigotmc.org/resources/124328/)
 [![Support on Buy Me a Coffee](https://img.shields.io/badge/Support-Buy%20Me%20a%20Coffee-ffdd00?logo=buymeacoffee)](https://buymeacoffee.com/epsilonlabs)
 
-**Invy** は、サーバーに軽量で簡単に導入できるカスタムアイテム管理用プラグインです。  
+**Invy** は、マイクラサーバーに軽量で簡単に導入できるカスタムアイテム管理用プラグインです。  
 設定ファイルから定義したアイテムをGUIで呼び出し、手軽に召喚・使用できます。
 
 ## 特徴
@@ -44,7 +44,7 @@
 
 ## アイテムの作り方（items.yml）
 
-`plugins/Invy/items.yml` にどんなアイテムを召喚したいかを書くだけで、 GUIに表示さ、すぐに使えるようになります。  
+`plugins/Invy/items.yml` にどんなアイテムを召喚したいかを書くだけで、 GUIに表示され、すぐに使えるようになります。  
 最大で**54番**スロットまでに登録できます。
 サンプルは [items.yml](src/main/resources/items.yml) を確認してください。
 
@@ -52,7 +52,7 @@
 - 本プラグインでは、Spigot に存在する `Enchantment` や `Attribute` や `PotionEffect` などの機能を自由に利用できますが、**すべての組み合わせに対して動作確認を行っているわけではありません**。
 - エンチャントと属性は重複可能ですが、 **ポーション効果は完全に別のメタデータなので重複できません**。
 - 使用環境やバージョンによっては、一部の素材や属性で**正常に動作しない**、または**アイテムデータが破損する**可能性もあります。
-- 万が一、予期しない挙動やデータ破損が発生した場合でも、**私たちはその責任を負いかねます**。
+- 万が一予期しない挙動やデータ破損が発生した場合でも、**私たちはその責任を負いかねます**。
 
 ### 項目ごとの説明
 

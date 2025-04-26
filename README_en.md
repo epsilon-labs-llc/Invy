@@ -13,7 +13,7 @@ You can summon and use items easily through a GUI based on definitions from a co
 **Summoning Custom Items from GUI**
 ![Image of Summoning Custom Items from GUI](imgs/summon_items.gif)
 
-**Using Custom Items**
+**Using Custom Items**  
 ![Image of Using Custom Items](imgs/use_items.gif)
 
 ## Features
